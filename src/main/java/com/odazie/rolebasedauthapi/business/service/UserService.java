@@ -18,6 +18,11 @@ public class UserService {
 
         return getUserRepository().findByUsername(username);
     }
+    public void saveUser(User user ){
+        getUserRepository().save(user);
+    }
+
+
 
     public UserRepository getUserRepository() {
         return userRepository;

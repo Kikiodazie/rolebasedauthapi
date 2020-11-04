@@ -1,7 +1,9 @@
 package com.odazie.rolebasedauthapi.data.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
-import java.util.HashSet;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 
@@ -13,9 +15,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(max = 100)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    @NotNull
+    @Size(max = 100)
+    @Column(name = "password", nullable = false)
     private String password;
-    private boolean enabled;
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -24,7 +32,15 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;
@@ -47,11 +63,4 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
 }

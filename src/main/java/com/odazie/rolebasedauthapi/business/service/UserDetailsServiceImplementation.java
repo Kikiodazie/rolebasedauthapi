@@ -1,11 +1,14 @@
 package com.odazie.rolebasedauthapi.business.service;
 
 import com.odazie.rolebasedauthapi.data.entity.User;
-import com.odazie.rolebasedauthapi.security.MyUserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class UserDetailsServiceImplementation implements UserDetailsService {
@@ -25,7 +28,15 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
             throw  new UsernameNotFoundException(username);
         }
 
-        return new MyUserDetails(user);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(), getAuthority(user));
+    }
+
+    private Set getAuthority(User user) {
+        Set authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
     }
 
 
