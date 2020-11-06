@@ -45,7 +45,7 @@ public class UserRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/addrole")
+    @PostMapping("admin/assign-role")
     public ResponseEntity<Void> assignRole(@RequestBody Role role, Authentication authentication){
         User currentUser = userService.findUserByUsername(authentication.getName());
         currentUser.getRoles().add(role);
