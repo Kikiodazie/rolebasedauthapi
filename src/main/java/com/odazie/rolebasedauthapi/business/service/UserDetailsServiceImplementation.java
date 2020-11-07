@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
+@Service(value = "userServiceImplementation")
 public class UserDetailsServiceImplementation implements UserDetailsService {
 
     private final UserService userService;
@@ -31,8 +31,11 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(), getAuthority(user));
     }
 
-    private Set getAuthority(User user) {
-        Set authorities = new HashSet<>();
+
+
+
+    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         });
