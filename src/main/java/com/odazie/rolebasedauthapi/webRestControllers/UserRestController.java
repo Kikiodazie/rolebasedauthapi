@@ -1,7 +1,6 @@
 package com.odazie.rolebasedauthapi.webRestControllers;
 
 import com.odazie.rolebasedauthapi.business.model.AuthToken;
-import com.odazie.rolebasedauthapi.business.model.CurrentUser;
 import com.odazie.rolebasedauthapi.business.service.UserService;
 import com.odazie.rolebasedauthapi.data.entity.User;
 import com.odazie.rolebasedauthapi.data.repository.RoleRepository;
@@ -52,7 +51,7 @@ public class UserRestController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> generateToken(@RequestBody CurrentUser currentUser) throws AuthenticationException {
+    public ResponseEntity<?> generateToken(@RequestBody User currentUser) throws AuthenticationException {
 
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -80,14 +79,14 @@ public class UserRestController {
 //    }
 
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
         User user = userService.findUserById(userId);
         if (user == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userService.deleteUser(user);
+        //userService.deleteUser(user);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
