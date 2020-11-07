@@ -33,7 +33,7 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
-        if(user.getUsername().equals("admin")){
+        if(user.getUsername().contains("admin")){
            role = roleRepository.findByName("ADMIN");
            roles.add(role);
         }

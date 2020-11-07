@@ -2,6 +2,7 @@ package com.odazie.rolebasedauthapi.webRestControllers;
 
 import com.odazie.rolebasedauthapi.business.model.AuthToken;
 import com.odazie.rolebasedauthapi.business.service.UserService;
+import com.odazie.rolebasedauthapi.data.entity.Role;
 import com.odazie.rolebasedauthapi.data.entity.User;
 import com.odazie.rolebasedauthapi.data.repository.RoleRepository;
 import com.odazie.rolebasedauthapi.securityConfig.TokenProvider;
@@ -68,15 +69,15 @@ public class UserRestController {
 
 
 
-//
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PostMapping("/role/{userId}")
-//    public ResponseEntity<Void> assignRole(@RequestBody Role role,@PathVariable Long userId){
-//        User user = userService.findUserById(userId);
-//        user.getRoles().add(role);
-//        roleRepository.save(role);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/role/{userId}")
+    public ResponseEntity<Void> assignRole(@RequestBody Role role, @PathVariable Long userId){
+        User user = userService.findUserById(userId);
+        user.getRoles().add(role);
+        roleRepository.save(role);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
 
     @PreAuthorize("hasRole('ADMIN')")
